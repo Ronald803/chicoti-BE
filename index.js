@@ -1,10 +1,10 @@
 const express = require('express');
+const router = require('./network/router')
 
 const app = express();
 
-app.use('/',function(req,res){
-    res.send('hola esta es el backend de la app chicoti')
-})
+router(app);
+
 
 app.listen(6000);
 console.log('La aplicacion está escuchando en http://localhost:6000');
