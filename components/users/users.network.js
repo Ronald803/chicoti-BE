@@ -11,11 +11,13 @@ router.get('/',(req,res)=>{
 });
 
 router.post('/',(req,res)=>{
-    userController.addUsers()
+    userController.addUsers(req.body)
         .then(newUser=>{
             res.send(newUser)
         })
-        .catch()
+        .catch(e=>{
+            res.send(e)
+        })
 })
 
 router.put('/',(req,res)=>{
