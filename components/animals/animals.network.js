@@ -10,12 +10,13 @@ router.get('/',(req,res)=>{
         .catch()
 });
 
-router.post('/',(req,res)=>{
-    animalController.addAnimal()
+router.post('/:characteristic',(req,res)=>{
+    console.log("asdfasdfasdf");
+    animalController.addAnimal(req.body,req.params.characteristic)
         .then(newAnimal=>{
             res.send(newAnimal)
         })
-        .catch()
+        .catch(e=>console.log(e))
 })
 
 router.put('/',(req,res)=>{

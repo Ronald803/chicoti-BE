@@ -5,6 +5,8 @@ const config = require('./config');
 const connectDB = require('./db')
 
 connectDB(config.dbUrl)
+
+app.use(express.json())
 router(app);
 
 
