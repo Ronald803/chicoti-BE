@@ -22,6 +22,10 @@ const mySchema = new Schema({
     email: {
         type: String,
         required: true
+    },
+    pets: {
+        type: Array,
+        required: true
     }
 
 })

@@ -3,7 +3,7 @@ const router        = express.Router();
 const userController= require('./users.controller');
 
 router.get('/',(req,res)=>{
-    userController.getUsers()
+    userController.getUsers(req.query)
         .then(users=>{
             res.send(users)
         })

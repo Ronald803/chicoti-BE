@@ -9,9 +9,9 @@ function addAnimal(infoAnimal,characteristic){
     })
 }
 
-function getAnimals(){
+function getAnimals(filter){
     return new Promise((resolve,reject)=>{
-        resolve({msg: "getAnimals desde controller"})
+        resolve(animalStore.listAnimals(filter))
     })
 }
 

@@ -3,7 +3,7 @@ const router            = express.Router();
 const animalController  = require('./animals.controller');
 
 router.get('/',(req,res)=>{
-    animalController.getAnimals()
+    animalController.getAnimals(req.query)
         .then(animals=>{
             res.send(animals)
         })
