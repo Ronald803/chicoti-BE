@@ -13,15 +13,14 @@ router.get('/',(req,res)=>{
         .catch()
 });
 
-router.post('/:characteristic',validateJWT(['user']),inOrderToUpload.any(),(req,res)=>{
+router.post('/:characteristic',validateJWT(['everybody']),inOrderToUpload.any(),(req,res)=>{
+    const {files} = req;
     const bbbody = JSON.parse(req.body.bodyJson);
-    console.log(bbbody,req.body,req.params.characteristic,req.files);
-    res.send("desde backend")
-    // animalController.addAnimal(req.body,req.params.characteristic)
-    //     .then(newAnimal=>{
-    //         res.send(newAnimal)
-    //     })
-    //     .catch(e=>console.log(e))
+    animalController.addAnimal(bbbody,req.params.characteristic,req.user.name,files)
+        .then(newAnimal=>{
+            res.send(newAnimal)
+        })
+        .catch(e=>console.log(e))
 })
 
 router.put('/',(req,res)=>{

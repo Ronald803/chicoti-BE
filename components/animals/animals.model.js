@@ -7,11 +7,11 @@ const mySchema = new Schema({
         type: String,
         required: true
     },
-    name: {
+    petName: {
         type: String,
         required: true
     },
-    human: {
+    humanName: {
         type: String,
         required: true
     },
@@ -57,6 +57,18 @@ const mySchema = new Schema({
     },
     reward: {
         type: Number,
+        required: true
+    },
+    cellphones: {
+        type: Array,
+        required: true
+    },
+    photoUrl:{
+        type: String,
+        required: true
+    },
+    photoUrlOfficial:{
+        type: String,
         required: true
     }
 })

@@ -18,7 +18,8 @@ function login(email,password){
         resolve({
             name: user[0].name,
             token,
-            rol: user[0].rol
+            rol: user[0].rol,
+            cellphone: user[0].cellphone
         })
     })
 }
