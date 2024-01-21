@@ -1,4 +1,6 @@
 const animalStore       = require('./animals.store');
+const userStore         = require('../users/users.store');
+const smtpServer        = require('../../services/smtp/smtpServer');
 
 function addAnimal(infoAnimal,characteristic,humanName,files){
     return new Promise(async (resolve,reject)=>{
@@ -26,7 +28,19 @@ function addAnimal(infoAnimal,characteristic,humanName,files){
                             photoUrlOfficial: " "
                         }
         console.log(newAnimal);
-        const newAnimalSaved = await animalStore.addAnimalToDB(newAnimal)
+        const newAnimalSaved = await animalStore.addAnimalToDB(newAnimal);
+        // ______________________________ Notifying admins that a new animal is added to the database _______________________________
+        const admins = await userStore.listUsers({'rol':'admin'});
+        admins.map(async (admin)=>{
+            const subject = "Nueva fotografía"
+            const body = `
+                            <h1>Nuevo animalito registrado</h1>
+                            <p>Ingresa a la app y ayuda a corregir el url de la fotografía</p>
+                            <p>${newAnimal.petName} fue ${newAnimal.characteristic}</p>
+                            <a href="${urlImage}">Fotografía</a>
+                        `
+            await smtpServer.mailer(admin.email,subject,body)
+        })
         resolve(newAnimalSaved)
     })
 }

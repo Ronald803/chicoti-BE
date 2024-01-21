@@ -15,7 +15,7 @@ async function mailer(email,subject,body){
         }
     });
     let info = await transporter.sendMail({
-        from: '"Guía Titulación ETN" <viclasoftcode@gmail.com>',
+        from: '"chicoti" <viclasoftcode@gmail.com>',
         to: email,
         subject: subject,
         html: body

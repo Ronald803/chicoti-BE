@@ -17,7 +17,8 @@ function addUsers(userData){
         resolve({
             name: userSaved.name,
             token,
-            rol: userSaved.rol
+            rol: userSaved.rol,
+            cellphone: userSaved.cellphone
         })
     })
 }
