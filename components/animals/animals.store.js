@@ -43,5 +43,15 @@ async function saveImageToGoogleDrive(file){
     const id = await uploadFile(file);
     return id;
 }
-
-module.exports = {addAnimalToDB,listAnimals,saveImageToGoogleDrive}
+async function updateAnimal(id,body){
+    const foundAnimal = await AnimalModel.findById(id);
+    foundAnimal.photoUrlOfficial = body.photoUrlOfficial;
+    const updatedAnimal = await foundAnimal.save();
+    return updatedAnimal;
+}
+module.exports =    {
+                        addAnimalToDB,
+                        listAnimals,
+                        saveImageToGoogleDrive,
+                        updateAnimal
+                    }

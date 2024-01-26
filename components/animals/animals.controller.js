@@ -51,7 +51,22 @@ function getAnimals(filter){
     })
 }
 
-module.exports = {addAnimal,getAnimals}
+function updateAnimal(id,body){
+    return new Promise( async(resolve,reject)=>{
+        if(!id || !body){
+            reject ("Datos incompletos")
+            return false
+        }
+        const updated =  await animalStore.updateAnimal(id,body)
+        resolve (updated)
+    })
+}
+
+module.exports =    {
+                        addAnimal,
+                        getAnimals,
+                        updateAnimal
+                    }
 
 // https://drive.usercontent.google.com/download?id=1Pg2vOTI5rV4c88owMnuMfjie69osz8oI&export=view&authuser=0
 
