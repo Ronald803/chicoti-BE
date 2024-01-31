@@ -25,6 +25,12 @@ router.post('/:characteristic',validateJWT(['everybody']),inOrderToUpload.any(),
         .catch(e=>{response.error(req,res,e,400)})
 })
 
+router.put('/notification/',validateJWT(['everybody']),(req,res)=>{
+    animalController.notificateInfoAboutAnimal(req.user,req.body)
+        .then(msg=>{response.success(req,res,"Notificación exitosa",msg,200)})
+        .catch(e=>{response.error(req,res,e,400)})
+})
+
 router.put('/:id',validateJWT(['admin']),(req,res)=>{
     animalController.updateAnimal(req.params.id,req.body)
         .then( updatedAnimal=>{
