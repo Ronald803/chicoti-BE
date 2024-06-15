@@ -1,47 +1,56 @@
 const animalStore       = require('./animals.store');
 const userStore         = require('../users/users.store');
 const smtpServer        = require('../../services/smtp/smtpServer');
-
-function addAnimal(infoAnimal,characteristic,humanName,files){
+const cloudinary        = require('cloudinary');
+const fs                = require('fs');
+const path              = require('path')
+require('dotenv').config()
+function addAnimal(infoAnimal,characteristic,humanName,fileName){
     return new Promise(async (resolve,reject)=>{
-        const idImage = await animalStore.saveImageToGoogleDrive(files[0]);
-        //const urlImage = `https://drive.google.com/uc?export=view&id=${idImage}`;
-        const urlImage = `https://drive.google.com/file/d/${idImage}/view`
-        const {petName,age,species,gender,breed,color,sterilized,sterilizedCode,other,date,place,cellphones} = infoAnimal;
-        const newAnimal = {
-                            petName,
-                            age,
-                            species,
-                            breed,
-                            color,
-                            sterilized,
-                            sterilizedCode,
-                            gender,
-                            other,
-                            date,
-                            place,
-                            reward:0,
-                            characteristic,
-                            humanName,
-                            cellphones,
-                            photoUrl:urlImage,
-                            photoUrlOfficial: " "
-                        }
-        console.log(newAnimal);
-        const newAnimalSaved = await animalStore.addAnimalToDB(newAnimal);
-        // ______________________________ Notifying admins that a new animal is added to the database _______________________________
-        const admins = await userStore.listUsers({'rol':'admin'});
-        admins.map(async (admin)=>{
-            const subject = "Nueva fotografía"
-            const body = `
-                            <h1>Nuevo animalito registrado</h1>
-                            <p>Ingresa a la app y ayuda a corregir el url de la fotografía</p>
-                            <p>${newAnimal.petName} fue ${newAnimal.characteristic}</p>
-                            <a href="${urlImage}">Fotografía</a>
-                        `
-            await smtpServer.mailer(admin.email,subject,body)
-        })
+        try{
+            // ----------------- save image in cloudinary -------------------------
+            cloudinary.config({
+                cloud_name:     process.env.CLOUDINARY_CLOUD_NAME,
+                api_key:        process.env.CLOUDINARY_API_KEY,
+                api_secret:     process.env.CLOUDINARY_API_SECRET
+            })
+            const uploadResult = await cloudinary.uploader.upload(`components/animals/uploads/${fileName}`)
+            //// --------------------------------------------------------------
+            const urlImage = uploadResult.url
+            if(!urlImage){
+                reject("error")
+            }
+            const filepath = path.join(__dirname,'uploads',fileName)
+            fs.unlink(filepath, (err) => {
+                if(err){
+                    console.log(err)
+                }
+            })
+            const {petName,age,species,gender,breed,color,sterilized,sterilizedCode,other,date,place,cellphones} = infoAnimal;
+            const newAnimal = {
+                                petName,
+                                age,
+                                species,
+                                breed,
+                                color,
+                                sterilized:false,
+                                sterilizedCode,
+                                gender,
+                                other,
+                                date,
+                                place,
+                                reward:0,
+                                characteristic,
+                                humanName,
+                                cellphones,
+                                photoUrl:urlImage,
+                                photoUrlOfficial: urlImage
+                            }
+            const newAnimalSaved = await animalStore.addAnimalToDB(newAnimal);
         resolve(newAnimalSaved)
+        } catch (error){
+            console.log(error)
+        }
     })
 }
 
