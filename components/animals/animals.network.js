@@ -5,17 +5,18 @@ const { validateJWT }   = require('../../middlewares/validateJWT');
 const multer            = require('multer');
 const response          = require('../../network/response');
 const path              = require('path')
-const storage = multer.diskStorage({
-    destination: function (req,file,cb){
-        cb(null,'components/animals/uploads/');
-    },
-    filename: function (req,file,cb){
-        const fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-        cb(null, fileName )
-        req.fileName = fileName
-    }
-})
-const upload = multer({ storage: storage})
+//const storage = multer.diskStorage({
+//    destination: function (req,file,cb){
+//        cb(null,'components/animals/uploads/');
+//    },
+//    filename: function (req,file,cb){
+//        const fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname)
+//        cb(null, fileName )
+//        req.fileName = fileName
+//    }
+//})
+//const upload = multer({ storage: storage})
+const upload = multer()
 
 router.get('/',(req,res)=>{
     animalController.getAnimals(req.query)
@@ -30,7 +31,7 @@ router.get('/',(req,res)=>{
 router.post('/:characteristic',validateJWT(['everybody']),upload.single('image'),(req,res)=>{
     try {
         const bbbody = JSON.parse(req.body.bodyJson);
-        animalController.addAnimal(bbbody,req.params.characteristic,req.user.name,req.fileName)
+        animalController.addAnimal(bbbody,req.params.characteristic,req.user.name,req.file)
             .then(newAnimal=>{response.success(req,res,"Mascota registrada correctamente",newAnimal,200)})
             .catch(e=>{response.error(req,res,e,400)})
     } catch (error) {

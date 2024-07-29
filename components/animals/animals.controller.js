@@ -4,12 +4,12 @@ const smtpServer        = require('../../services/smtp/smtpServer');
 const { storeImageCloudinary, deleteLocalImageCopy } = require('./utilities');
 require('dotenv').config()
 
-function addAnimal(infoAnimal,characteristic,humanName,fileName){
+function addAnimal(infoAnimal,characteristic,humanName,file){
     return new Promise(async (resolve,reject)=>{
-        const urlImage = await storeImageCloudinary(fileName)
+        const urlImage = await storeImageCloudinary(file)
         if(!urlImage){ reject("error") }
-        deleteLocalImageCopy(fileName)
-        const {petName,age,species,gender,breed,color,sterilized,sterilizedCode,otherdate,place,cellphones} = infoAnimal;
+        //deleteLocalImageCopy(file)
+        const {petName,age,species,gender,breed,color,sterilized,sterilizedCode,other,date,place,cellphones} = infoAnimal;
         const newAnimal = {
                             petName,
                             age,
