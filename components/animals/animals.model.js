@@ -55,22 +55,26 @@ const mySchema = new Schema({
         type: String,
         required: true
     },
-    reward: {
-        type: Number,
-        required: true
-    },
     cellphones: {
         type: Array,
         required: true
     },
-    photoUrl:{
+    photoUrl: {
         type: String,
         required: true
     },
-    photoUrlOfficial:{
+    photoUrlOfficial: {
         type: String,
         required: true
-    }
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const model = mongoose.model('Animal',mySchema)

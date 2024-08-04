@@ -5,17 +5,7 @@ const { validateJWT }   = require('../../middlewares/validateJWT');
 const multer            = require('multer');
 const response          = require('../../network/response');
 const path              = require('path')
-//const storage = multer.diskStorage({
-//    destination: function (req,file,cb){
-//        cb(null,'components/animals/uploads/');
-//    },
-//    filename: function (req,file,cb){
-//        const fileName = file.fieldname + '-' + Date.now() + path.extname(file.originalname)
-//        cb(null, fileName )
-//        req.fileName = fileName
-//    }
-//})
-//const upload = multer({ storage: storage})
+
 const upload = multer()
 
 router.get('/',(req,res)=>{

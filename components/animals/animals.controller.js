@@ -8,26 +8,25 @@ function addAnimal(infoAnimal,characteristic,humanName,file){
     return new Promise(async (resolve,reject)=>{
         const urlImage = await storeImageCloudinary(file)
         if(!urlImage){ reject("error") }
-        //deleteLocalImageCopy(file)
-        const {petName,age,species,gender,breed,color,sterilized,sterilizedCode,other,date,place,cellphones} = infoAnimal;
+        const {petName,age,species,gender,breed,color,other,cellphones,city} = infoAnimal;
         const newAnimal = {
-                            petName,
-                            age,
-                            species,
-                            breed,
-                            color,
-                            sterilized:false,
-                            sterilizedCode,
-                            gender,
-                            other,
-                            date,
-                            place,
-                            reward:0,
-                            characteristic,
-                            humanName,
-                            cellphones,
-                            photoUrl:urlImage,
-                            photoUrlOfficial: urlImage
+            characteristic,
+            petName,
+            humanName,
+            species,
+            breed,
+            gender,
+            age,
+            city,
+            color,
+            sterilized:false,
+            sterilizedCode:"none",
+            other,
+            date: "none",
+            place:"none",
+            cellphones,
+            photoUrl:urlImage,
+            photoUrlOfficial: urlImage
                         }
         const newAnimalSaved = await animalStore.addAnimalToDB(newAnimal);
         resolve(newAnimalSaved)
@@ -37,14 +36,16 @@ function addAnimal(infoAnimal,characteristic,humanName,file){
 function notificateInfoAboutAnimal(user,animal){
     return new Promise( async(resolve,reject)=>{
         const humanOwnerName = await userStore.listUsers({'name':animal.humanName});
-        const subject = `Tenemos noticias de ${animal.name}`
+        const subject = `Tenemos noticias de ${animal.petName}`
         const body = `
+                        <h1>Tenemos noticias de ${animal.petName}</h1>
                         <h1>Contactate a la brevedad posible con ${user.name}</h1>
                         <p>Este es su número celular ${user.cellphone}</p>
                         <p>Este es su correo electrónico ${user.email}</p>
                         
                     `
         await smtpServer.mailer(humanOwnerName[0].email,subject,body)
+        await smtpServer.mailer(process.env.ADMIN_EMAIL,subject,body)
         resolve({"msg":"Ya se notificó al humano"})
     })
 }

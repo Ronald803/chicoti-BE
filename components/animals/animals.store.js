@@ -10,7 +10,7 @@ async function addAnimalToDB(animal){
 }
 
 async function listAnimals(filter){
-    const animals = await AnimalModel.find(filter);
+    const animals = await AnimalModel.find(filter).sort({ createdAt: -1 });
     return animals;
 }
 
