@@ -45,7 +45,9 @@ function notificateInfoAboutAnimal(user,animal){
                         
                     `
         await smtpServer.mailer(humanOwnerName[0].email,subject,body)
-        await smtpServer.mailer(process.env.ADMIN_EMAIL,subject,body)
+        if(humanOwnerName[0].email != process.env.ADMIN_EMAIL){
+            await smtpServer.mailer(process.env.ADMIN_EMAIL,subject,body)
+        }
         resolve({"msg":"Ya se notificó al humano"})
     })
 }
