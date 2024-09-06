@@ -18,7 +18,8 @@ function addUsers(userData){
             name: userSaved.name,
             token,
             rol: userSaved.rol,
-            cellphone: userSaved.cellphone
+            cellphone: userSaved.cellphone,
+            email: userSaved.email
         })
     })
 }

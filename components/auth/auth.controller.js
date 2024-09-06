@@ -19,7 +19,8 @@ function login(email,password){
             name: user[0].name,
             token,
             rol: user[0].rol,
-            cellphone: user[0].cellphone
+            cellphone: user[0].cellphone,
+            email: user[0].email,
         })
     })
 }
