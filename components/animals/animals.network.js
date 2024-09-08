@@ -8,6 +8,16 @@ const path              = require('path')
 
 const upload = multer()
 
+router.get('/my-posts',validateJWT(['everybody']),(req,res)=>{
+    animalController.getAnimals({humanName: req.user._id})
+        .then(animals=>{
+            response.success(req,res,animals.length,animals,200)
+        })
+        .catch(e=>{
+            response.error(req,res,e,400)
+        })
+})
+
 router.get('/',(req,res)=>{
     animalController.getAnimals(req.query)
         .then(animals=>{
@@ -21,7 +31,7 @@ router.get('/',(req,res)=>{
 router.post('/:characteristic',validateJWT(['everybody']),upload.single('image'),(req,res)=>{
     try {
         const bbbody = JSON.parse(req.body.bodyJson);
-        animalController.addAnimal(bbbody,req.params.characteristic,req.user.name,req.file)
+        animalController.addAnimal(bbbody,req.params.characteristic,req.user._id,req.file)
             .then(newAnimal=>{response.success(req,res,"Mascota registrada correctamente",newAnimal,200)})
             .catch(e=>{response.error(req,res,e,400)})
     } catch (error) {
