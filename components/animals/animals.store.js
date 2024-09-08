@@ -44,10 +44,14 @@ async function saveImageToGoogleDrive(file){
     return id;
 }
 async function updateAnimal(id,body){
-    const foundAnimal = await AnimalModel.findById(id);
-    foundAnimal.photoUrlOfficial = body.photoUrlOfficial;
-    const updatedAnimal = await foundAnimal.save();
-    return updatedAnimal;
+    const updatedAnimal = await AnimalModel.findByIdAndUpdate(id,body,{
+        new: true,
+        runValidators: true
+    });
+    if(!updatedAnimal){
+        throw new Error('Animal not found')
+    }
+    return updatedAnimal
 }
 module.exports =    {
                         addAnimalToDB,

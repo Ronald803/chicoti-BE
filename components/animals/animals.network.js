@@ -46,7 +46,7 @@ router.put('/notification/',validateJWT(['everybody']),(req,res)=>{
         .catch(e=>{response.error(req,res,e,400)})
 })
 
-router.put('/:id',validateJWT(['admin']),(req,res)=>{
+router.put('/:id',validateJWT(['everybody']),(req,res)=>{
     animalController.updateAnimal(req.params.id,req.body)
         .then( updatedAnimal=>{
             response.success(req,res,"URL registrado exitosamente",updatedAnimal,200)
